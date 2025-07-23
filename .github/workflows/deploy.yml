@@ -23,12 +23,29 @@ jobs:
     - name: 'Checkout GitHub repository'
       uses: actions/checkout@v2
 
+    - name: Debug AWS Configuration
+      run: |
+        # Get Account ID
+        echo "AWS Account ID: $(aws sts get-caller-identity --query 'Account' --output text)"
+
+        # Get current region
+        echo "AWS Region: $(aws configure get region)"
+        echo "AWS ENV Region: ${{ env.AWS_REGION }}"
+
+        # Get caller identity (full details)
+        aws sts get-caller-identity
+
+        # List configured credentials (don't worry, it won't show actual values)
+        aws configure list
+
+
     - name: 'Configure AWS credentials'
-      uses: aws-actions/configure-aws-credentials@v1
+      uses: aws-actions/configure-aws-credentials@v4
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION }}
+        mask-aws-account-id: false
 
     - name: 'Set up Terraform'
       uses: hashicorp/setup-terraform@v1
