@@ -3,6 +3,17 @@ provider "aws" {
   region = "us-west-2"
 }
 
+terraform {
+  required_version = ">= 1.4.0"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 4.0"
+    }
+  }
+}
+
 #tfsec:ignore:aws-s3-block-public-acls
 #tfsec:ignore:aws-s3-block-public-policy
 #tfsec:ignore:aws-s3-enable-bucket-encryption
